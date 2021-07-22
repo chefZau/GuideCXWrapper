@@ -25,10 +25,10 @@ class GuideCX:
         self.KEY = key
         self.HOST = host
 
-        # Every API call requires a header. Instead of creating a dictionary 
-        # every time before the call, we embedded the header in an attribute. 
-        # To use it, do `self.head` and assign it to the `headers` parameter 
-        # when using the requests library. 
+        # Every API call requires a header. Instead of creating a dictionary
+        # every time before the call, we embedded the header in an attribute.
+        # To use it, do `self.head` and assign it to the `headers` parameter
+        # when using the requests library.
 
         self.head = {
             'Authorization': 'Bearer ' + key
@@ -194,4 +194,69 @@ class GuideCX:
 
         return response
 
-    def createPendingProject():
+    def createPendingProject(self):
+        pass
+
+    def getProjects(self, limit=10, offset=0, customerName=None, projectName=None, projectManagerEmail=None):
+        """Retrieves a summarized list of projects from your organization.
+
+        Args:
+            limit (int, optional): 
+                The max numbre of projects to return. Defaults to 10.
+                Note: Maximum is 50.
+            offset (int, optional): 
+                The number of projects to skip. Defaults to 0.
+            customerName (string, optional): 
+                The name of the organization which owns the project(s) in 
+                question. Defaults to None.
+            projectName (string, optional): 
+                THe name of the project(s) in question. Defaults to None.
+            projectManagerEmail (string, optional): 
+                The email of the project manager over the project(s) in 
+                questions. Defaults to None.
+
+        Returns:
+            dict(): The JSON response of the HTTP request.
+        """
+        endpoint = f'/projects'
+        url = self.HOST + endpoint
+
+        queryStrings = {
+            'limit': limit,
+            'offset': offset,
+        }
+
+        if customerName:
+            queryStrings['customerName'] = customerName
+
+        if projectName:
+            queryStrings['projectName'] = projectName
+
+        if projectManagerEmail:
+            queryStrings['projectManagerEmail'] = projectManagerEmail
+
+        response = requests.get(url, headers=self.head,
+                                params=queryStrings).json()
+        return response
+
+
+    def getProject(self, projectID):
+        """Retrieves a single project with more details.
+
+        For even more details, you can get project tasks, notes and milestones.
+
+        Args:
+            projectID (string): 
+                The project ID.
+
+        Returns:
+            dict(): The JSON response of the HTTP request.
+        """
+        endpoint = f'/projects/{projectID}'
+        url = self.HOST + endpoint
+
+        response = requests.get(url, headers=self.head).json()
+
+        return response
+
+    
