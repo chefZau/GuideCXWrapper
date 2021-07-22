@@ -16,3 +16,11 @@ class GuideCX:
 
         response = requests.get(url, headers=self.head).json()
         return response
+
+    def getMilestonesByProject(self, projectID):
+
+        endpoint = f'/projects/{projectID}/milestones'
+        url = self.HOST + endpoint
+
+        response = requests.get(url, headers=self.head).json()
+        return response
