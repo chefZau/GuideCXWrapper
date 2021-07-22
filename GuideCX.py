@@ -56,3 +56,18 @@ class GuideCX:
         response = requests.get(url, headers=self.head).json()
         
         return response
+
+    def createNoteToTask(self, taskID, text, userEmail, internalOnly=False):
+
+        endpoint = f'/tasks/{taskID}/notes'
+        url = self.HOST + endpoint
+
+        body = {
+            'text': text,
+            'userEmail': userEmail,     # if !exists, project manager's email
+            'internalOnly': internalOnly
+        }
+
+        response = requests.post(url, json=body, headers=self.head).json()
+
+        return response
