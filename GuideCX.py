@@ -364,4 +364,48 @@ class GuideCX:
 
         return response
 
-# Custom Field APIs
+    def updateTaskStatus(self, taskID, status):
+        """Updates the status of a task.
+
+        This endpoint has a rate limit of 10 requests per minute in order to
+        prevent the abuse or overload of GuideCX services.
+
+        Args:
+            taskID (string): 
+                The task ID.
+            status (string): 
+                Please check VALID_STATUS for available status. 
+
+        Raises:
+            ValueError: If status is invalid raise the error.
+
+        Returns:
+            dict(): The JSON response of the HTTP request.
+        """
+
+        VALID_STATUS = {
+            "not_started",
+            "working_on_it",
+            "stuck",
+            "sign_off",
+            "done",
+            "not_applicable",
+            "not_scheduled",
+            "scheduled"
+        }
+
+        if status not in VALID_STATUS:
+            raise ValueError('Invalid status!')
+
+        endpoint = f'/tasks/{taskID}'
+        url = self.HOST + endpoint
+
+        body = {
+            'status': status
+        }
+
+        response = requests.post(url, json=body, headers=self.head).json()
+
+        return response
+
+    # Custom Field APIs
