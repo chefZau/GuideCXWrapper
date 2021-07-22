@@ -3,7 +3,7 @@ import requests
 
 class GuideCX:
 
-    def __init__(self, key, host) -> None:
+    def __init__(self, key, host):
         self.KEY = key
         self.HOST = host
         self.head = {
@@ -74,3 +74,5 @@ class GuideCX:
         response = requests.post(url, json=body, headers=self.head).json()
 
         return response
+
+    def createPendingProject():
