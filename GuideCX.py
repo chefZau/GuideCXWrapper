@@ -324,6 +324,7 @@ class GuideCX:
                 "assigneeEmail": {
                     "description": "Assignee's email array.",
                     "type": "array",
+                    "minItems": 1,
                     "items": {
                         "type": "string",
                         "pattern": "^\S+@\S+$"
@@ -332,6 +333,7 @@ class GuideCX:
                 "status": {
                     "description": "Task status array",
                     "type": "array",
+                    "minItems": 1,
                     "items": {
                         "enum": [
                             "not_started",
@@ -348,6 +350,7 @@ class GuideCX:
                 "projectStatus": {
                     "description": "Project status array.",
                     "type": "array",
+                    "minItems": 1,
                     "items": {
                         "enum": [
                             "on_hold",
@@ -360,6 +363,7 @@ class GuideCX:
                 "type": {
                     "description": "Task type array.",
                     "type": "array",
+                    "minItems": 1,
                     "items": {
                         "enum": [
                             "regular",
@@ -371,6 +375,7 @@ class GuideCX:
                 "responsibility": {
                     "description": "Task responsibility array.",
                     "type": "array",
+                    "minItems": 1,
                     "items": {
                         "enum": [
                             "internal",
@@ -382,6 +387,7 @@ class GuideCX:
                 "priority": {
                     "description": "Task priority array.",
                     "type": "array",
+                    "minItems": 1,
                     "items": {
                         "type": "string",
                         "enum": [
@@ -410,7 +416,7 @@ class GuideCX:
             validate(schema=SCHEMA, instance=kwargs)
         except:
             raise ValueError('Invalid argument(s)!')
-        
+
         response = requests.get(url, params=kwargs, headers=self.head).json()
 
         return response
@@ -522,7 +528,7 @@ class GuideCX:
             validate(schema=SCHEMA, instance=kwargs)
         except:
             raise ValueError('Invalid argument(s)!')
-        
+
         response = requests.get(url, params=kwargs, headers=self.head).json()
 
         return response
