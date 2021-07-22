@@ -24,3 +24,11 @@ class GuideCX:
 
         response = requests.get(url, headers=self.head).json()
         return response
+
+    def getNote(self, noteID):
+        
+        endpoint = f'/notes/{noteID}'
+        url = self.HOST + endpoint
+
+        response = requests.get(url, headers=self.head).json()
+        return response
