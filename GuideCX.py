@@ -201,8 +201,140 @@ class GuideCX:
 
     # Project APIs
 
-    def createPendingProject(self):
-        pass
+    def createPendingProject(self, **kwargs):
+        """Creates a pending project.
+
+        A pending project is not yet a live project. A Pending Project is an 
+        object containing the default values that a GuideCX admin or project 
+        manager will have access to as they complete the project setup within 
+        the GuideCX app. A successful API request will trigger a "Pending 
+        Project" notification within the app and provide an opportunity for 
+        your project manager to verify the project details before the project 
+        is created and your customer users are notified.
+
+        Raises:
+            ValueError: If the input is invalid.
+
+        Returns:
+            dict(): The JSON response of the HTTP request.The API returns a
+            special `apiProjectId` which will allow you to fetch the final 
+            project once the setup has been complete. If you try to request 
+            the project using that ID before the project setup has been 
+            complete it will not be available. This `apiProjectId` is 
+            interchangeable with the final project id in making requests to
+            get project details or add project notes.
+        """
+        endpoint = f'/projects'
+        url = self.HOST + endpoint
+
+        SCHEMA = {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "Project Schema",
+            "description": "The schema for creating a new project.",
+            "type": "object",
+            "additionalProperties": False,
+            "properties": {
+                "name": {
+                    "description": "Name of the Project",
+                    "type": "string"
+                },
+                "cashValue": {
+                    "description": "Project's Cash Value",
+                    "type": "number",
+                    "minimum": 0
+                },
+                "domain": {
+                    "description": "Domain of the customer organization. Omit www",
+                    "type": "string",
+                    "pattern": "^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)+[A-Za-z]{2,6}"
+                },
+                "externalId": {
+                    "description": "A reference ID to associate a GuideCX project to an external project",
+                    "type": "string"
+                },
+                "projectManagerEmail": {
+                    "description": "Project Manager's Email",
+                    "type": "string",
+                    "pattern": "^\S+@\S+$"
+                },
+                "referringObjectId": {
+                    "description": "Reference to an external system, provided in the request to POST /projects",
+                    "type": "string"
+                },
+                "startOn": {
+                    "description": "Project's start date. Will be ignored if at the moment of the project creation this date is earlier than the current date",
+                    "type": "string",
+                    "pattern": "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$"
+                },
+                "endOn": {
+                    "description": "Project's end date",
+                    "type": "string",
+                    "pattern": "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$"
+                },
+                "templateSkus": {
+                    "description": "SKUs of the templates to be used in the project",
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "templateExecution": {
+                    "description": "Definition of the project's workflow",
+                    "type": "string",
+                    "enum": [
+                        "sequential",
+                        "parallel"
+                    ]
+                },
+                "customerUsers": {
+                    "description": "Array with a list of Customer Users (Existing and New)",
+                    "type": "array",
+                    "uniqueItems": True,
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": False,
+                        "properties": {
+                            "firstName": {
+                                "type": "string"
+                            },
+                            "lastName": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "customFields": {
+                    "description": "Array of objects (projectCustomFieldInput)",
+                    "type": "array",
+                    "uniqueItems": True,
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": False,
+                        "properties": {
+                            "customFieldId": {"type": "string"},
+                            "value": {"type": "string"}
+                        },
+                        "required": ["customFieldId", "value"]
+                    }
+                }
+            },
+            "required": ["name"]
+        }
+
+        try:
+            validate(schema=SCHEMA, instance=kwargs)
+        except:
+            raise ValueError('Invalid argument(s)!')
+
+        response = requests.post(url, headers=self.head, json=kwargs).json()
+
+        return response
 
     def getProjects(self, limit=10, offset=0, customerName=None, projectName=None, projectManagerEmail=None):
         """Retrieves a summarized list of projects from your organization.
