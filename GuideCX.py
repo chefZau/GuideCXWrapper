@@ -8,3 +8,11 @@ class GuideCX:
         self.head = {
             'Authorization': 'Bearer ' + key
         }
+
+    def getMilestone(self, milestoneID):
+        
+        endpoint = f'/milestones/{milestoneID}'
+        url = self.HOST + endpoint
+
+        response = requests.get(url, headers=self.head).json()
+        return response
