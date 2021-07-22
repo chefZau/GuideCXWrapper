@@ -293,6 +293,23 @@ class GuideCX:
 
     # Task APIs
 
+    def getTask(self, taskID):
+        """Retrieves the detail of a single task.
+
+        Args:
+            taskID (string): 
+                The task ID.
+
+        Returns:
+            dict(): The JSON response of the HTTP request.
+        """
+        endpoint = f'/tasks/{taskID}'
+        url = self.HOST + endpoint
+
+        response = requests.get(url, headers=self.head).json()
+
+        return response
+
     def updateTask(self, taskID, **kwargs):
         """Updates task attributes.
 
@@ -317,6 +334,7 @@ class GuideCX:
             "title": "Task",
             "description": "The schema of the task.",
             "type": "object",
+            "additionalProperties": False,
             "properties": {
                 "name": {
                     "description": "The name of the task.",
