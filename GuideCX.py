@@ -1,5 +1,6 @@
 import requests
 
+
 class GuideCX:
 
     def __init__(self, key, host) -> None:
@@ -10,7 +11,7 @@ class GuideCX:
         }
 
     def getMilestone(self, milestoneID):
-        
+
         endpoint = f'/milestones/{milestoneID}'
         url = self.HOST + endpoint
 
@@ -44,7 +45,7 @@ class GuideCX:
         return response
 
     def createNoteToProject(self, projectID, text, userEmail, internalOnly=False):
-        
+
         endpoint = f'/projects/{projectID}/notes'
         url = self.HOST + endpoint
 
@@ -60,7 +61,7 @@ class GuideCX:
         url = self.HOST + endpoint
 
         response = requests.get(url, headers=self.head).json()
-        
+
         return response
 
     def createNoteToTask(self, taskID, text, userEmail, internalOnly=False):
