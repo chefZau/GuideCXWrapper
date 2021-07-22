@@ -568,10 +568,12 @@ class GuideCX:
                 },
                 "startOn": {
                     "description": "The starting time of the task.",
+                    "type": "string",
                     "pattern": "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$"
                 },
                 "dueOn": {
                     "description": "The end time of the task.",
+                    "type": "string",
                     "pattern": "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$"
                 },
                 "status": {
