@@ -25,6 +25,16 @@ class GuideCX:
         response = requests.get(url, headers=self.head).json()
         return response
 
+    def Note(text, userEmail, internalOnly=False):
+
+        note = {
+            'text': text,
+            'userEmail': userEmail,     # if !exists, project manager's email
+            'internalOnly': internalOnly
+        }
+
+        return note
+
     def getNote(self, noteID):
 
         endpoint = f'/notes/{noteID}'
@@ -38,11 +48,7 @@ class GuideCX:
         endpoint = f'/projects/{projectID}/notes'
         url = self.HOST + endpoint
 
-        body = {
-            'text': text,
-            'userEmail': userEmail,     # if !exists, project manager's email
-            'internalOnly': internalOnly
-        }
+        body = self.Note(text, userEmail, internalOnly)
 
         response = requests.post(url, json=body, headers=self.head).json()
 
@@ -62,11 +68,7 @@ class GuideCX:
         endpoint = f'/tasks/{taskID}/notes'
         url = self.HOST + endpoint
 
-        body = {
-            'text': text,
-            'userEmail': userEmail,     # if !exists, project manager's email
-            'internalOnly': internalOnly
-        }
+        body = self.Note(text, userEmail, internalOnly)
 
         response = requests.post(url, json=body, headers=self.head).json()
 
