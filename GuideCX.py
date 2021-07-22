@@ -1,4 +1,5 @@
 import requests
+from jsonschema import validate
 
 
 class GuideCX:
@@ -34,6 +35,8 @@ class GuideCX:
             'Authorization': 'Bearer ' + key
         }
 
+    # Milestone APIs
+
     def getMilestone(self, milestoneID):
         """Retrieves an individual milestone by ID.
 
@@ -67,6 +70,8 @@ class GuideCX:
 
         response = requests.get(url, headers=self.head).json()
         return response
+
+    # Notes APIs
 
     def Note(text, userEmail, internalOnly=False):
         """Creates a Note object.
@@ -194,6 +199,8 @@ class GuideCX:
 
         return response
 
+    # Project APIs
+
     def createPendingProject(self):
         pass
 
@@ -239,7 +246,6 @@ class GuideCX:
                                 params=queryStrings).json()
         return response
 
-
     def getProject(self, projectID):
         """Retrieves a single project with more details.
 
@@ -259,7 +265,6 @@ class GuideCX:
 
         return response
 
-    
     def addCusFieldToProject(self, projectID, customFieldId, value):
         """Add a new custom field to an existing project.
 
@@ -286,3 +291,77 @@ class GuideCX:
 
         return response
 
+    # Task APIs
+
+    def updateTask(self, taskID, **kwargs):
+        """Updates task attributes.
+
+        Args:
+            taskID (string): 
+                The task ID.
+
+        Raises:
+            ValueError: If the user input is invalid, raise the error.
+            Check TASK_SCHEMA for the definitions.
+
+        Returns:
+            dict(): The JSON response of the HTTP request. Returns the fields
+            that were updated.
+        """
+
+        endpoint = f'/tasks/{taskID}'
+        url = self.HOST + endpoint
+
+        TASK_SCHEMA = {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "Task",
+            "description": "The schema of the task.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The name of the task.",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "The description of the task.",
+                    "type": "string"
+                },
+                "assigneeEmail": {
+                    "description": "The email of the user to reassign a task. This user must already be on the project.",
+                    "type": "string",
+                    "pattern": "^\S+@\S+$"
+                },
+                "startOn": {
+                    "description": "The starting time of the task.",
+                    "pattern": "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$"
+                },
+                "dueOn": {
+                    "description": "The end time of the task.",
+                    "pattern": "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$"
+                },
+                "status": {
+                    "description": "The status of the task.",
+                    "enum": [
+                        "not_started",
+                        "working_on_it",
+                        "stuck",
+                        "sign_off",
+                        "done",
+                        "not_applicable",
+                        "not_scheduled",
+                        "scheduled"
+                    ]
+                }
+            }
+        }
+
+        try:
+            validate(schema=TASK_SCHEMA, instance=kwargs)
+        except:
+            raise ValueError('Invalid argument(s)!')
+
+        response = requests.patch(url, json=kwargs, headers=self.head).json()
+
+        return response
+
+# Custom Field APIs
