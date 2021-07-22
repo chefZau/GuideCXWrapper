@@ -47,3 +47,12 @@ class GuideCX:
         response = requests.post(url, json=body, headers=self.head).json()
 
         return response
+
+    def getNotesFromProject(self, projectID):
+
+        endpoint = f'/projects/{projectID}/notes'
+        url = self.HOST + endpoint
+
+        response = requests.get(url, headers=self.head).json()
+        
+        return response
