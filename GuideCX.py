@@ -534,7 +534,7 @@ class GuideCX:
                     "type": "number",
                     "minimum": 0,
                     "maximum": 50,
-                    "exclusiveMaximum": True
+                    "exclusiveMaximum": False
                 },
                 "offset": {
                     "description": "The number of tasks to skip.",
@@ -646,7 +646,7 @@ class GuideCX:
                     "type": "number",
                     "minimum": 0,
                     "maximum": 50,
-                    "exclusiveMaximum": True
+                    "exclusiveMaximum": False
                 },
                 "offset": {
                     "description": "The number of tasks to skip.",
