@@ -425,6 +425,7 @@ class GuideCX:
 
     # Task APIs
 
+<<<<<<< HEAD
     def getTask(self, taskID):
         """Retrieves the detail of a single task.
 
@@ -665,6 +666,8 @@ class GuideCX:
 
         return response
 
+=======
+>>>>>>> bfbbdba7d5c7e364495478e2b69939fd6b8d1f72
     def updateTask(self, taskID, **kwargs):
         """Updates task attributes.
 
@@ -689,7 +692,10 @@ class GuideCX:
             "title": "Task",
             "description": "The schema of the task.",
             "type": "object",
+<<<<<<< HEAD
             "additionalProperties": False,
+=======
+>>>>>>> bfbbdba7d5c7e364495478e2b69939fd6b8d1f72
             "properties": {
                 "name": {
                     "description": "The name of the task.",
@@ -706,12 +712,18 @@ class GuideCX:
                 },
                 "startOn": {
                     "description": "The starting time of the task.",
+<<<<<<< HEAD
                     "type": "string",
+=======
+>>>>>>> bfbbdba7d5c7e364495478e2b69939fd6b8d1f72
                     "pattern": "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$"
                 },
                 "dueOn": {
                     "description": "The end time of the task.",
+<<<<<<< HEAD
                     "type": "string",
+=======
+>>>>>>> bfbbdba7d5c7e364495478e2b69939fd6b8d1f72
                     "pattern": "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$"
                 },
                 "status": {
@@ -739,6 +751,7 @@ class GuideCX:
 
         return response
 
+<<<<<<< HEAD
     def updateTaskStatus(self, taskID, status):
         """Updates the status of a task.
 
@@ -784,3 +797,6 @@ class GuideCX:
         return response
 
     # Custom Field APIs
+=======
+# Custom Field APIs
+>>>>>>> bfbbdba7d5c7e364495478e2b69939fd6b8d1f72
