@@ -260,3 +260,29 @@ class GuideCX:
         return response
 
     
+    def addCusFieldToProject(self, projectID, customFieldId, value):
+        """Add a new custom field to an existing project.
+
+        Args:
+            projectID (string): 
+                The project ID.
+            customFieldId (string): 
+                The custom field id in the organization.
+            value (string): 
+                The value of the new custom field.
+
+        Returns:
+            dict(): The JSON response of the HTTP request.
+        """
+        endpoint = f'/projects/{projectID}/custom-fields'
+        url = self.HOST + endpoint
+
+        body = {
+            'customFieldId': customFieldId,
+            'value': value
+        }
+
+        response = requests.post(url, headers=self.head, json=body).json()
+
+        return response
+
