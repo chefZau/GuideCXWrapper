@@ -415,6 +415,118 @@ class GuideCX:
 
         return response
 
+    def getTasks(self, **kwargs):
+        """Retrieves a summarized list of tasks from your organization.
+
+        Raises:
+            ValueError: If the input is invalid.
+
+        Returns:
+            dict(): The JSON response of the HTTP request.
+        """
+        endpoint = f'/tasks'
+        url = self.HOST + endpoint
+
+        SCHEMA = {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "Project Attributes",
+            "description": "The schema to look for a project.",
+            "type": "object",
+            "properties": {
+                "assigneeEmail": {
+                    "description": "Assignee's email array.",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^\S+@\S+$"
+                    }
+                },
+                "status": {
+                    "description": "Task status array",
+                    "type": "array",
+                    "items": {
+                        "enum": [
+                            "not_started",
+                            "working_on_it",
+                            "stuck",
+                            "sign_off",
+                            "done",
+                            "not_applicable",
+                            "not_scheduled",
+                            "scheduled"
+                        ]
+                    }
+                },
+                "projectStatus": {
+                    "description": "Project status array.",
+                    "type": "array",
+                    "items": {
+                        "enum": [
+                            "on_hold",
+                            "on_time",
+                            "done",
+                            "late"
+                        ]
+                    }
+                },
+                "type": {
+                    "description": "Task type array.",
+                    "type": "array",
+                    "items": {
+                        "enum": [
+                            "regular",
+                            "event",
+                            "grouped"
+                        ]
+                    }
+                },
+                "responsibility": {
+                    "description": "Task responsibility array.",
+                    "type": "array",
+                    "items": {
+                        "enum": [
+                            "internal",
+                            "third_party",
+                            "customer"
+                        ]
+                    }
+                },
+                "priority": {
+                    "description": "Task priority array.",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "low",
+                            "medium",
+                            "high"
+                        ]
+                    }
+                },
+                "limit": {
+                    "description": "The max number of tasks to return.",
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 50,
+                    "exclusiveMaximum": True
+                },
+                "offset": {
+                    "description": "The number of tasks to skip.",
+                    "type": "number",
+                    "minimum": 0,
+                }
+            }
+        }
+
+        try:
+            validate(schema=SCHEMA, instance=kwargs)
+        except:
+            raise ValueError('Invalid argument(s)!')
+        
+        response = requests.get(url, params=kwargs, headers=self.head).json()
+
+        return response
+
     def updateTask(self, taskID, **kwargs):
         """Updates task attributes.
 
