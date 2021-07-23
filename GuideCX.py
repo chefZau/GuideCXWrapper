@@ -845,3 +845,48 @@ class GuideCX:
         response = requests.post(url, json=body, headers=self.head).json()
 
         return response
+
+    def updateCustomField(self, customFieldID, **kwargs):
+        """Updates an existing organization's custom field.
+
+        Args:
+            customFieldID (string): 
+                The custom field ID.
+
+        Raises:
+            ValueError: If the argument is invalid.
+
+        Returns:
+            dict(): The JSON response of the HTTP request.
+        """
+
+        endpoint = f'/custom-fields/{customFieldID}'
+        url = self.HOST + endpoint
+
+        SCHEMA = {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "title": "Custom Field",
+            "description": "The schema of a CustomField.",
+            "additionalProperties": False,
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "internalOnly": {
+                    "type": "boolean"
+                },
+                "sortOrder": {
+                    "type": "number"
+                }
+            }
+        }
+
+        try:
+            validate(schema=SCHEMA, instance=kwargs)
+        except:
+            raise ValueError('Invalid argument(s)!')
+
+        response = requests.patch(url, json=kwargs, headers=self.head).json()
+
+        return response
