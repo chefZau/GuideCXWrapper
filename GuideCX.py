@@ -73,7 +73,7 @@ class GuideCX:
 
     # Notes APIs
 
-    def Note(text, userEmail, internalOnly=False):
+    def Note(self, text, userEmail, internalOnly=False):
         """Creates a Note object.
 
         Both the `createNoteToProject`, and `createNoteToTask` trigger the Note 
