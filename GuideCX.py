@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+from numpy import nan
 from jsonschema import validate
 
 
@@ -813,7 +814,7 @@ class GuideCX:
 
         return response
 
-    def createCustomField(self, name, internalOnly, sortOrder=pd.nan):
+    def createCustomField(self, name, internalOnly, sortOrder=nan):
         """Add a new custom field to the organization
 
         Args:
