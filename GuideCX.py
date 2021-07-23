@@ -175,7 +175,8 @@ class GuideCX:
         """Adds a new note to the specified task.
 
         Args:
-            taskID ([type]): [description]
+            taskID ([type]):
+                The task ID.
             text (string): 
                 The note itself.
             userEmail (string): 
