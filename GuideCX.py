@@ -7,6 +7,9 @@ from jsonschema import validate
 class GuideCX:
     """A Wrapper for using GuideCX API.
 
+    FYI, the following is the link to the documentation:
+        [GuideCX API](https://api.guidecx.com/api/v1/docs)
+
     Attributes:
         KEY: The API token.
         HOST: The API base URL.
