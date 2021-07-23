@@ -1,4 +1,5 @@
 import requests
+import pandas as pd
 from jsonschema import validate
 
 
@@ -785,3 +786,62 @@ class GuideCX:
         return response
 
     # Custom Field APIs
+
+    def getCustomFields(self, limit=10, offset=0):
+        """Retrieves a paginated list of custom fields.
+
+        Args:
+            limit (int, optional): 
+                The max number of custom fields to return. Defaults to 10.
+                Max is 50.
+            offset (int, optional): 
+                The number of custom fields to skip. Defaults to 0.
+        
+        Returns:
+            dict(): The JSON response of the HTTP request.
+        """
+
+        endpoint = f'/custom-fields'
+        url = self.HOST + endpoint
+
+        body = {
+            'limit': limit,
+            'offset': offset
+        }
+
+        response = requests.get(url, params=body, headers=self.head).json()
+
+        return response
+
+    def createCustomField(self, name, internalOnly, sortOrder=pd.nan):
+        """Add a new custom field to the organization
+
+        Args:
+            name (string): 
+                The name of the custom field.
+            internalOnly (boolean): 
+                Controls whether this custom field, when used on a project, is
+                visible to customers or only your internal project team.
+            sortOrder ([type], optional): 
+                Controls the order that these fields are listed on a project, 
+                allowing you to sort more critical fields to the top of the
+                list. If two fields have the same sort order then the secondary
+                sort order will be by creation date. Defaults to pd.nan.
+
+        Returns:
+            dict(): The JSON response of the HTTP request.
+        """
+        endpoint = f'/custom-fields'
+        url = self.HOST + endpoint
+
+        body = {
+            'name': name,
+            'internalOnly': internalOnly,
+        }
+
+        if not pd.isna(sortOrder):
+            body['sortOrder'] = sortOrder
+
+        response = requests.post(url, json=body, headers=self.head).json()
+
+        return response
